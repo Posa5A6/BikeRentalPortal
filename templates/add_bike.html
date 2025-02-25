@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Bike</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298); /* Dark Blue Gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1); /* Transparent White */
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        /* Company Header */
+        .company-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .company-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        input[type="text"], 
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .dashboard-btn {
+            background-color: #007bff;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #0056b3;
+        }
+        /* Back Button Styles */
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+.back-btn:active {
+    background: #1e7e34;
+    transform: scale(0.98);
+}
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Company Logo and Name -->
+        <div class="company-header">
+            <img src="{{ url_for('static', filename='bikee.png') }}" alt="Company Logo" class="logo">
+            <h2 class="company-name">Bike Rental Co.</h2>
+        </div>
+
+        <h1>Add New Bike</h1>
+        <form id="bikeForm" action="{{ url_for('add_bike') }}" method="POST">
+            <label for="bike_name">Bike Name:</label>
+            <input type="text" id="bike_name" name="bike_name" required placeholder="Enter bike name">
+
+            <label for="rent_per_hour">Rent per Hour:</label>
+            <input type="number" id="rent_per_hour" name="rent_per_hour" required min="0" placeholder="Enter rent per hour">
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="available" name="available">
+                <label for="available">Available</label>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit">Add Bike</button>
+                <button type="button" class="dashboard-btn" onclick="goToDashboard()">Admin Dashboard</button>
+            </div>
+        </form>
+        <a class="back-btn" href="{{ url_for('manage_bikes') }}">← Back to Manage Bikes</a>
+    </div>
+
+    <script>
+        function goToDashboard() {
+            window.location.href = "{{ url_for('admin_dashboard') }}";
+        }
+
+        document.getElementById("bikeForm").addEventListener("submit", function(event) {
+            const bikeName = document.getElementById("bike_name").value.trim();
+            const rentPerHour = document.getElementById("rent_per_hour").value.trim();
+
+            if (bikeName === "" || rentPerHour === "") {
+                alert("Please fill out all required fields.");
+                event.preventDefault(); // Stop form submission
+            }
+        });
+    </script>
+</body>
+</html>

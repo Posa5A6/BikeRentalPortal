@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Funds</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: hsl(224, 60%, 48%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .container {
+            background: #aa5555;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Heading */
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Input Fields */
+        label {
+            display: block;
+            text-align: left;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            color: white;
+            align-items:baseline;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #6c757d;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+        .header h2 {
+    flex-grow: 1; /* Makes the title expand */
+    text-align: center; /* Centers text */
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+.header img {
+    height: 50px;
+}
+
+.header .btn {
+    text-decoration: none;
+    background: #007bff;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 5px;
+}
+
+.header .btn:hover {
+    background: #0056b3;
+}
+
+/* Footer */
+.footer {
+    width: 100%;
+    background: #1a1010b3; /* Darker background for contrast */
+    color: rgb(15, 15, 15);
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+}
+
+ .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 15px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.header img {
+    height: 50px;
+    width: auto;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header .btn {
+    background-color: #ff5733;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.header .btn:hover {
+    background-color: #cc4625;
+}
+
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='bikee.png') }}" alt="Company Logo">
+        <h2>Bike Rental Portal</h2>
+
+    </div>
+
+    <div class="container">
+        <h1>Add Funds</h1>
+        <form method="POST" onsubmit="return validateAmount()">
+            <label for="amount">Enter Amount:</label>
+            <input type="number" name="amount" id="amount" step="0.01" min="0.01" required>
+            <p class="error-message" id="error-message">Please enter a valid amount greater than zero.</p>
+            <button type="submit" class="btn" id="submit-btn">Add Funds</button>
+        </form>
+        <a href="{{ url_for('user_dashboard') }}" class="back-btn">Back to Dashboard</a>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Bike Rental Portal. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        function validateAmount() {
+            let amount = document.getElementById('amount').value;
+            let errorMessage = document.getElementById('error-message');
+            let submitBtn = document.getElementById('submit-btn');
+            
+            if (amount <= 0) {
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Processing...';
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

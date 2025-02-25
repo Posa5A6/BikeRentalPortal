@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Bikes</title>
+    
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            color: white;
+        }
+        /* Back Button Styles */
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+.back-btn:active {
+    background: #1e7e34;
+    transform: scale(0.98);
+}
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+        }
+
+        h1 {
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 20px 0;
+        }
+        .search-box {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Table Styles */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            color: black;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #007bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* Status Highlighting */
+        .available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .edit-btn {
+            background: #f4c542;
+            color: black;
+        }
+
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #e0b12f;
+        }
+
+        .delete-btn:hover {
+            background: #cc0000;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding: 15px;
+            background: #333;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+            }
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/static/bikee.png" alt="Company Logo" class="logo">
+        <h1>Bike Rental Management</h1>
+    </div>
+
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search bikes..." onkeyup="filterBikes()">
+    </div>
+    
+    <table id="bikesTable">
+        <thead>
+            <tr>
+                <th>Bike ID</th>
+                <th>Name</th>
+                <th>Rent Per Hour</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bike in bikes %}
+            <tr>
+                <td>{{ bike._id }}</td>
+                <td>{{ bike.name }}</td>
+                <td>${{ bike.rent_per_hour }}/hr</td>
+                <td class="status">{{ bike.status }}</td>
+                <td>
+                    <button class="action-btn delete-btn" data-id="{{ bike._id }}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/admin_dashboard" class="back-btn">Back to Dashboard</a>
+
+    <div class="footer">
+        <p>&copy; 2025 Bike Rental Co. All Rights Reserved.</p>
+        <p>Contact: info@bikerental.com | Phone: +91 98765 43210</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".status").forEach(cell => {
+                if (cell.textContent.trim().toLowerCase() === "available") {
+                    cell.classList.add("available");
+                } else {
+                    cell.classList.add("unavailable");
+                }
+            });
+
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    let bikeId = this.getAttribute("data-id");
+                    if (confirm("Are you sure you want to delete this bike?")) {
+                        fetch(`/delete_bike/${bikeId}`, {
+                            method: "DELETE"
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Bike deleted successfully!");
+                                location.reload();
+                            } else {
+                                alert("Error deleting bike!");
+                            }
+                        })
+                        .catch(error => console.error("Error:", error));
+                    }
+                });
+            });
+        });
+
+        function filterBikes() {
+            let input = document.querySelector(".search-box").value.toLowerCase();
+            let rows = document.querySelectorAll("#bikesTable tbody tr");
+            rows.forEach(row => {
+                let name = row.cells[1].textContent.toLowerCase();
+                row.style.display = name.includes(input) ? "" : "none";
+            });
+        }
+    </script>
+</body>
+</html>

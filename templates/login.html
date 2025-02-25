@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bike Rental Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #1a1a1a, #333);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(51, 51, 51, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            list-style-type: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav .nav-links li a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+
+        /* Login Form */
+        .login-container {
+            width: 90%;
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 30px;
+            color: #f39c12;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+
+        .login-container input[type="submit"] {
+            background-color: #f39c12;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #e67e22;
+        }
+
+        .login-container p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .login-container p a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        .login-container p a:hover {
+            color: #e67e22;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(51, 51, 51, 0.9);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        /* Responsiveness */
+        @media screen and (max-width: 768px) {
+            .login-container {
+                width: 90%;
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Bike Rental</div>
+        <ul class="nav-links">
+            <li><a href="/home">Home |</a></li>
+            <li><a href="/login">Login |</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <section class="login-container">
+        <h2>Login to Your Account 🏍️</h2>
+        <form action="/login" method="POST">
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Bike Rental Portal. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

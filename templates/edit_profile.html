@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: absolute;
+            top: 20px;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h2 {
+            color: #fff;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar h2 i {
+            color: #ffcc00;
+        }
+
+        .logout-btn {
+            background: #ff4d4d;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .logout-btn:hover {
+            background: #cc0000;
+        }
+
+        .container {
+            background: hsl(276, 40%, 40%);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffcc00;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s ease-in-out;
+        }
+
+        input:focus {
+            border-color: #ffcc00;
+            outline: none;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #ffcc00;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #ff9900;
+            transform: scale(1.05);
+            border-color: #ffcc00;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+       /* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Ensures full-width */
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.7); /* Darker background for better visibility */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Fixes header at the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Ensures the main content doesn't go under the fixed header */
+body {
+    padding-top: 80px;
+}
+
+.header h2 {
+    flex-grow: 1; /* Makes the title expand */
+    text-align: center; /* Centers text */
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+.header img {
+    height: 50px;
+}
+
+.header .btn {
+    text-decoration: none;
+    background: #007bff;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 5px;
+}
+
+.header .btn:hover {
+    background: #0056b3;
+}
+
+/* Footer */
+
+
+    </style>
+</head>
+<body>
+
+       <!-- Header -->
+       <div class="header">
+        <img src="{{ url_for('static', filename='bikee.png') }}" alt="Company Logo">
+        <h2>Bike Rental Portal                                      </h2>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </div>
+
+
+    <div class="container">
+        <h1>Edit Profile</h1>
+
+        <!-- Profile Picture Upload -->
+        <label for="profile-upload">
+            <img src="{{ url_for('static', filename='profile.png') }}" id="profile-pic" class="profile-picture" alt="Profile Picture">
+        </label>
+        <input type="file" id="profile-upload" accept="image/*">
+
+        <form method="POST" onsubmit="return validateForm()">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" value="{{ user.username }}" required>
+            <div class="error-message" id="username-error">Username cannot be empty!</div>
+
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone" value="{{ user.phone }}" required>
+            <div class="error-message" id="phone-error">Enter a valid 10-digit phone number!</div>
+
+            <label for="address">Address</label>
+            <input type="text" name="address" id="address" value="{{ user.address }}" required>
+            <div class="error-message" id="address-error">Address cannot be empty!</div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <a href="{{ url_for('user_dashboard') }}" class="back-btn">Back to Dashboard</a>
+    </div>
+     
+    <!-- Footer -->
+<div class="footer">
+    <p>&copy; 2025 Bike Rental Portal. All rights reserved.</p>
+</div>
+
+    <script>
+        function validateForm() {
+            let username = document.getElementById("username").value.trim();
+            let phone = document.getElementById("phone").value.trim();
+            let address = document.getElementById("address").value.trim();
+            let phoneRegex = /^[0-9]{10}$/;
+            let valid = true;
+
+            document.getElementById("username-error").style.display = "none";
+            document.getElementById("phone-error").style.display = "none";
+            document.getElementById("address-error").style.display = "none";
+
+            if (username === "") {
+                document.getElementById("username-error").style.display = "block";
+                valid = false;
+            }
+
+            if (!phoneRegex.test(phone)) {
+                document.getElementById("phone-error").style.display = "block";
+                valid = false;
+            }
+
+            if (address === "") {
+                document.getElementById("address-error").style.display = "block";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        document.getElementById("profile-upload").addEventListener("change", function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("profile-pic").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Bike</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Book Bike</h1>
+    
+    <h2>{{ bike['name'] }}</h2>
+    <p>Rent per hour: ₹{{ bike['rent_per_hour'] }}</p>
+    <p>Description: {{ bike['description'] }}</p>
+    
+    <form method="POST">
+        <p><strong>Confirm Booking:</strong></p>
+        <button type="submit">Confirm Booking</button>
+    </form>
+
+    <a href="{{ url_for('user_dashboard') }}">Cancel</a>
+</body>
+</html>

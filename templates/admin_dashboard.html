@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Rental Portal | Admin Dashboard</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Background with Animated Gradient */
+        body {
+            background: linear-gradient(-45deg, #007bff, #0056b3, #004494, #003377);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 30px;
+            color: #fff;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #c9302c;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .info-section h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Image & Text Sections */
+        .image-text-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px auto;
+            max-width: 1000px;
+        }
+
+        .image-text-container img {
+            width: 40%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .text-box {
+            width: 50%;
+            text-align: left;
+        }
+
+        .text-box h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .text-box p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Reverse Image-Text Layout */
+        .image-text-reverse {
+            flex-direction: row-reverse;
+        }
+          /* Company History Section */
+          .company-history {
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .company-history h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .company-history p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bike Rental Portal</h1>
+
+    <nav>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='bikee.png') }}" alt="Company Logo">
+            <h2>Bike Rental Portal</h2>
+        </div>
+        <ul>
+            <li><a href="{{ url_for('manage_bookings') }}">Manage Bookings</a></li>
+            <li><a href="{{ url_for('view_users') }}">View Users</a></li>
+            <li><a href="{{ url_for('view_bikes') }}">View Bikes</a></li>
+            <li><a href="{{ url_for('add_bike') }}">Add Bikes</a></li>
+            <li><a href="{{ url_for('manage_bikes') }}">Manage Bikes</a></li>
+        </ul>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </nav>
+
+    <!-- Company Information Section -->
+    <div class="info-section">
+        <h2>Welcome to Bike Rental Portal</h2>
+        <p>
+            Our Bike Rental Portal allows users to easily book, manage, and track bike rentals in real-time. 
+            As an admin, you can manage user bookings, add new bikes, and oversee the rental process.
+        </p>
+    </div>
+     <!-- Company History Section -->
+     <div class="company-history">
+        <h2>Our Story</h2>
+        <p>
+            Founded in 2020, our company started with a simple vision: making bike rentals seamless and accessible for everyone. 
+            Over the years, we have expanded our fleet, improved our booking system, and partnered with local businesses to provide 
+            affordable and reliable bike rental services across the city.
+        </p>
+        <p>
+            Today, we are proud to serve thousands of happy customers, offering a variety of bikes for different needs—from city commuting to adventure trips.
+        </p>
+    </div>
+    <!-- Image-Text Sections -->
+    <div class="image-text-container">
+        <img src="{{ url_for('static', filename='expf.jpg') }}" alt="Our Fleet">
+        <div class="text-box">
+            <h3>Explore Our Fleet</h3>
+            <p>Our bike rental service provides a wide range of bikes, from standard city rides to high-speed sports bikes, all well-maintained and ready for adventure.</p>
+        </div>
+    </div>
+
+    <div class="image-text-container image-text-reverse">
+        <img src="{{ url_for('static', filename='sem.jpg') }}" alt="Easy Booking">
+        <div class="text-box">
+            <h3>Seamless Booking Experience</h3>
+            <p>With our easy-to-use platform, users can book bikes in just a few clicks. Real-time availability ensures a hassle-free experience.</p>
+        </div>
+    </div>
+
+    <div class="image-text-container">
+        <img src="{{ url_for('static', filename='aff.jpg') }}" alt="Affordable Rentals">
+        <div class="text-box">
+            <h3>Affordable Pricing</h3>
+            <p>We offer competitive pricing with flexible rental plans to fit all budgets, making biking more accessible to everyone.</p>
+        </div>
+    </div>
+
+    <div class="image-text-container image-text-reverse">
+        <img src="{{ url_for('static', filename='tf.jpg') }}" alt="24/7 Support">
+        <div class="text-box">
+            <h3>24/7 Customer Support</h3>
+            <p>Need help? Our support team is available 24/7 to assist with bookings, bike issues, and general inquiries.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Bike Rental Portal | Designed for a seamless bike rental experience.</p>
+    </footer>
+
+</body>
+</html>

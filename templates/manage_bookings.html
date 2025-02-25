@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Bookings</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .company-header img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .company-header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        h1 {
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            color: black;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #ff4d6d;
+            color: white;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s ease-in-out;
+            text-transform: uppercase;
+        }
+
+        .cancel-btn {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .confirm-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #cc0000;
+        }
+
+        .confirm-btn:hover {
+            background: #388e3c;
+        }
+
+        /* Disabled Button */
+        .disabled {
+            background: gray !important;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+            }
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Company Logo and Name -->
+    <div class="company-header">
+        <img src="/static/bikee.png" alt="Bike Rental Logo">
+        <h1>Bike Rental Portal</h1>
+    </div>
+
+    <h1>Manage Bookings</h1>
+
+    <a href="/admin_dashboard" class="back-btn">← Back to Admin Dashboard</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>User</th>
+                <th>Bike</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="bookingTable">
+            {% for booking in bookings %}
+            <tr id="row-{{ booking._id }}">
+                <td>{{ booking._id }}</td>
+                <td>{{ booking.user }}</td>
+                <td>{{ booking.bike }}</td>
+                <td class="status">{{ booking.status }}</td>
+                <td>
+                    <button class="action-btn cancel-btn {% if booking.status == 'Cancelled' %}disabled{% endif %}" 
+                        onclick="updateBooking('{{ booking._id }}', 'cancel')" 
+                        {% if booking.status == 'Cancelled' %} disabled {% endif %}>
+                        Cancel
+                    </button>
+                    <button class="action-btn confirm-btn {% if booking.status == 'Confirmed' %}disabled{% endif %}" 
+                        onclick="updateBooking('{{ booking._id }}', 'confirm')" 
+                        {% if booking.status == 'Confirmed' %} disabled {% endif %}>
+                        Confirm
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        © 2025 Bike Rental Portal | All Rights Reserved
+    </div>
+
+    <script>
+        function updateBooking(bookingId, action) {
+            let url = "";
+            if (action === "cancel") {
+                url = `/cancel_booking/${bookingId}`;
+            } else if (action === "confirm") {
+                url = `/confirm_booking/${bookingId}`;
+            }
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let statusCell = document.querySelector(`#row-${bookingId} .status`);
+                    let cancelBtn = document.querySelector(`#row-${bookingId} .cancel-btn`);
+                    let confirmBtn = document.querySelector(`#row-${bookingId} .confirm-btn`);
+
+                    if (action === "cancel") {
+                        statusCell.textContent = "Cancelled";
+                        cancelBtn.classList.add("disabled");
+                        cancelBtn.disabled = true;
+                        confirmBtn.classList.remove("disabled");
+                        confirmBtn.disabled = false;
+                    } else if (action === "confirm") {
+                        statusCell.textContent = "Confirmed";
+                        confirmBtn.classList.add("disabled");
+                        confirmBtn.disabled = true;
+                        cancelBtn.classList.remove("disabled");
+                        cancelBtn.disabled = false;
+                    }
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        /* Profile & Wallet Section */
+        .profile-wallet {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile, .wallet {
+            flex: 1;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        img.profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: 10px 0;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #007bff;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        /* Booking History */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Available Bikes */
+        .bike-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .bike-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-wallet {
+                flex-direction: column;
+            }
+        }
+
+        .edit-password-btn {
+            background: #ff9800;
+            margin-top: 10px;
+        }
+
+        .edit-password-btn:hover {
+            background: #e68900;
+        }
+
+        .delete-btn {
+            background: #d9534f;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background: #c9302c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='bikee.png') }}" alt="Company Logo">
+        <h2>Bike Rental Portal</h2>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>Welcome, {{ user.username }}</h1>
+
+        <!-- Profile & Wallet Section -->
+        <div class="profile-wallet">
+            <!-- Profile Section -->
+            <section class="profile">
+                <h2>Profile Information</h2>
+                <img src="{{ url_for('static', filename=user.profile_picture if user.profile_picture else 'pp.png') }}" class="profile-pic" alt="Profile Picture">
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone Number:</strong> {{ user.phone }}</p>
+                <p><strong>Address:</strong> {{ user.address }}</p>
+                <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+            </section>
+
+            <!-- Wallet Balance -->
+            <section class="wallet">
+                <h2>Wallet Balance</h2>
+                <p>Your balance: ₹<span id="wallet-balance">{{ wallet_balance }}</span></p>
+                <a href="{{ url_for('add_funds') }}" class="btn">Add Funds</a><br><br>
+                <h2>Change Password</h2>
+                <a href="{{ url_for('edit_password') }}" class="btn edit-password-btn">Edit Password</a><br><br>
+                <form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                    <button type="submit" class="btn delete-btn">Delete Account</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Booking History -->
+        <section>
+            <h2>Booking History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bike Name</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Status</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.bike_name }}</td>
+                        <td>{{ booking.start_time }}</td>
+                        <td>{{ booking.end_time }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>₹{{ booking.amount_paid }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+<br><br><br>
+        <!-- Available Bikes -->
+        <section>
+            <h2>Available Bikes</h2>
+            <ul class="bike-list">
+                {% for bike in available_bikes %}
+                <li class="bike-card">
+                    <p><strong>{{ bike.name }}</strong></p>
+                    <p>Rent per Hour: ₹{{ bike.rent_per_hour }}</p>
+                    <a href="{{ url_for('book_bike', bike_id=bike._id) }}" class="btn">Book Now</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Bike Rental Portal. All rights reserved.</p>
+    </div>
+
+</body>
+</html>

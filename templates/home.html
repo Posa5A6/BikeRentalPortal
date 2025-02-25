@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Rental Portal</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #222 url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            color: #fff;
+            background-color: #222;
+            animation: starsBackground 15s linear infinite;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            list-style-type: none;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        nav .nav-links li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+        }
+
+        nav .nav-links li a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+
+        /* Main Section */
+        .main-container {
+            text-align: center;
+            margin-top: 50px;
+            animation: fadeIn 2s ease-in;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Animated Heading */
+        .animated-heading {
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            opacity: 0;
+            transform: translateX(-100px);
+            animation: slideIn 1.5s forwards;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Bike Image (¼ of Screen Width) with Light Glow */
+        .bike-image {
+            width: 25vw;
+            height: 25vw;
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            margin: 20px 0;
+            animation: glowEffect 3s ease-in-out infinite alternate, pulseScale 3s ease-in-out infinite;
+            
+            /* White lighting effect around the image */
+            box-shadow: 0 0 25px 15px rgba(255, 255, 255, 0.9); /* Strong white light highlight around the image */
+        }
+
+        /* Glowing effect animation */
+        @keyframes glowEffect {
+            0% {
+                box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        /* Image pulse and scale animation */
+        @keyframes pulseScale {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Website Details Section */
+        .website-details {
+            width: 80%;
+            max-width: 800px;
+            text-align: left;
+            margin: 30px auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .website-details p {
+            font-weight: bold;
+            color: #f39c12;
+        }
+
+        .website-details ul {
+            margin-top: 10px;
+            list-style-type: none;
+        }
+
+        .website-details ul li {
+            padding: 8px 0;
+            font-size: 16px;
+        }
+
+        .highlight {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        /* Rent a Bike Button Animation */
+        button {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e67e22;
+            transform: scale(1.1);
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media screen and (max-width: 768px) {
+            nav .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .animated-heading {
+                font-size: 36px;
+            }
+
+            .bike-image {
+                width: 40vw;
+                height: 40vw;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .animated-heading {
+                font-size: 28px;
+            }
+
+            .bike-image {
+                width: 50vw;
+                height: 50vw;
+            }
+        }
+
+        /* Starry Background Animation */
+        @keyframes starsBackground {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Bike Rental</div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+|            <li><a href="/login">Login</a></li>
+|           <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Section -->
+    <section class="main-container">
+        <h1 class="animated-heading">Welcome to the Bike Rental Portal!</h1>
+        
+        <!-- Bike Image -->
+        <div class="bike-image" style="background-image: url('/static/bike.jpg');"></div>
+
+        <!-- Website Details -->
+        <div class="website-details">
+            <p>About Our Bike Rental Portal</p>
+            <p>Our <span class="highlight">Bike Rental Portal</span> provides a hassle-free experience for renting bikes. Whether you're a tourist or a daily commuter, we offer a wide variety of bikes at affordable prices.</p>
+
+            <ul>
+                <li>✅ <span class="highlight">Easy Booking:</span> Book a bike online in just a few clicks.</li>
+                <li>✅ <span class="highlight">Wide Selection:</span> Choose from scooters, sports bikes, and cruisers.</li>
+                <li>✅ <span class="highlight">Affordable Prices:</span> Competitive rates with flexible rental durations.</li>
+                <li>✅ <span class="highlight">Secure Payments:</span> Safe and secure online transactions.</li>
+                <li>✅ <span class="highlight">24/7 Support:</span> We are here to assist you anytime.</li>
+            </ul>
+        </div>
+
+        <button onclick="location.href='booking.html'">Rent a Bike</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Bike Rental Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("Home page loaded successfully!");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Bike</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: hsl(312, 9%, 68%);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h2 i {
+            margin-right: 10px;
+        }
+
+        .logout-btn {
+            background-color: #ff5733;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            white-space: nowrap;
+            display: inline-block;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .logout-btn {
+    background-color: #ff5733;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+    display: inline-block;
+    position: absolute;
+    top: 1px;
+    right: 30px; /* Adjusted right spacing */
+    min-width: 100px; /* Ensures button has proper width */
+    text-align: center;
+}
+
+.logout-btn:hover {
+    background-color: #cc4625;
+}
+
+
+        /* Container */
+        .container {
+            width: 50%;
+            margin: 80px auto 50px;
+            background: #664a4a;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: default ;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .back-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.back-btn:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h2>🚲 Bike Rental Portal</h2>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout </a>
+    </div>
+
+    <div class="container">
+        <h1>Edit Bike</h1>
+
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="alert {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" id="editBikeForm">
+            <div class="form-group">
+                <label for="bike_name">Bike Name:</label>
+                <input type="text" id="bike_name" name="bike_name" value="{{ bike['name'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="rent_per_hour">Rent per Hour:</label>
+                <input type="number" id="rent_per_hour" name="rent_per_hour" value="{{ bike['rent_per_hour'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="available">Available:</label>
+                <input type="checkbox" id="available" name="available" {% if bike['available'] %} checked {% endif %}>
+            </div>
+            <button type="submit" class="btn">Update Bike</button>
+        </form>
+
+        <a href="{{ url_for('manage_bikes') }}"class="back-btn">Back to Manage Bikes</a>
+    </div>
+
+    <script>
+        document.getElementById("editBikeForm").addEventListener("submit", function(event) {
+            let bikeName = document.getElementById("bike_name").value.trim();
+            let rentPerHour = document.getElementById("rent_per_hour").value.trim();
+
+            if (bikeName === "" || rentPerHour === "") {
+                alert("Please fill in all fields.");
+                event.preventDefault();
+            } else if (rentPerHour <= 0) {
+                alert("Rent per hour must be greater than zero.");
+                event.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
