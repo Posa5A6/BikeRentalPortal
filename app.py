@@ -15,7 +15,7 @@ app = Flask(__name__, template_folder='templates')
 # MongoDB URI
 app.config["MONGO_URI"] = "mongodb://localhost:27017/bike_rental"
 app.secret_key = 'your_secret_key'  # Secret key for sessions and flash messages
-app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb+srv://narisnarendras6:Posa@1432@cluster0.mongodb.net/yourdbname?retryWrites=true&w=majority")
+#app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb+srv://narisnarendras6:Posa@1432@cluster0.mongodb.net/yourdbname?retryWrites=true&w=majority")
 
 # Initialize PyMongo with the Flask app
 mongo = PyMongo(app)
