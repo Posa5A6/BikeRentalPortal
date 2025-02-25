@@ -14,23 +14,25 @@ import urllib.parse
 app = Flask(__name__, template_folder='templates')
 
 # MongoDB URI
-app.config["MONGO_URI"] = "mongodb+srv://narisnarendras6:Posa%401432@cluster0.n7htm.mongodb.net/"
+#app.config["MONGO_URI"] = "mongodb+srv://narisnarendras6:Posa%401432@cluster0.n7htm.mongodb.net/"
 app.secret_key = 'your_secret_key'  # Secret key for sessions and flash messages
 
 # Initialize PyMongo with the Flask app
 mongo = PyMongo(app)
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://narisnarendras6@gmail.com:Posa@1432@your-cluster.mongodb.net/?retryWrites=true&w=majority")
-db = client['bike_rental']
-users_collection = db['users']
-bookings_collection = db["bookings"]
+#client = MongoClient("mongodb+srv://narisnarendras6@gmail.com:Posa@1432@your-cluster.mongodb.net/?retryWrites=true&w=majority")
+
 
 username = "narisnarendras6@gmail.com"
 password = urllib.parse.quote_plus("Posa@1432")  # Encodes special characters
 
 uri = f"mongodb+srv://{username}:{password}@your-cluster.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri)
+db = client['bike_rental']
+users_collection = db['users']
+bookings_collection = db["bookings"]
+
 
 @app.before_request
 def before_request():
