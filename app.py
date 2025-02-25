@@ -13,14 +13,14 @@ from bson.objectid import ObjectId
 app = Flask(__name__, template_folder='templates')
 
 # MongoDB URI
-app.config["MONGO_URI"] = "mongodb://localhost:27017/bike_rental"
+app.config["MONGO_URI"] = "mongodb+srv://narisnarendras6:Posa%401432@cluster0.n7htm.mongodb.net/"
 app.secret_key = 'your_secret_key'  # Secret key for sessions and flash messages
 
 # Initialize PyMongo with the Flask app
 mongo = PyMongo(app)
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://narisnarendras6:Posa%401432@cluster0.n7htm.mongodb.net/')
+client = MongoClient('MongoClient("mongodb://127.0.0.1:27017/")
 db = client['bike_rental']
 users_collection = db['users']
 bookings_collection = db["bookings"]
