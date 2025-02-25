@@ -76,12 +76,18 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
+        # Check if admin credentials are entered
+        if email == "brp@gmail.com" and password == "1432":
+            session['user'] = 'admin'  # Store admin in session
+            print("Admin login successful! Redirecting...")  # Debugging
+            return redirect(url_for('admin_dashboard'))
+
+        # Check for normal user login
         user = users_collection.find_one({'email': email})
         
         if user and user.get('password') == password:
             session['user'] = email  # Store user in session
             print("User login successful! Redirecting...")  # Debugging
-            print("Session Data:", session)  # Print session info
             return redirect(url_for('user_dashboard'))
         
         flash("Invalid email or password!", "danger")
