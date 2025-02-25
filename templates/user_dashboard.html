@@ -153,6 +153,12 @@
             background: #d9534f;
             margin-top: 10px;
         }
+        .bike-icon {
+    width: 80px; /* Adjust size as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+}
 
         .delete-btn:hover {
             background: #c9302c;
@@ -224,18 +230,27 @@
         </section>
 <br><br><br>
         <!-- Available Bikes -->
-        <section>
-            <h2>Available Bikes</h2>
-            <ul class="bike-list">
-                {% for bike in available_bikes %}
-                <li class="bike-card">
-                    <p><strong>{{ bike.name }}</strong></p>
-                    <p>Rent per Hour: ₹{{ bike.rent_per_hour }}</p>
-                    <a href="{{ url_for('book_bike', bike_id=bike._id) }}" class="btn">Book Now</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </section>
+<section>
+    <h2>Available Bikes</h2>
+    <ul class="bike-list">
+        {% for bike in available_bikes %}
+        <li class="bike-card">
+            <img src="{{ url_for('static', filename='bik.png') }}" alt="Bike Image" class="bike-icon">
+            <p><strong>{{ bike.name }}</strong></p>
+            <p>Rent per Hour: ₹{{ bike.rent_per_hour }}</p>
+            
+            <!-- Form to submit POST request -->
+            <form action="{{ url_for('book_bike') }}" method="POST">
+                <input type="hidden" name="bike_id" value="{{ bike._id }}">
+                <input type="hidden" name="amount" value="{{ bike.rent_per_hour }}">
+                <button type="submit" class="btn">Book Now</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+
     </div>
 
     <div class="footer">
