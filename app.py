@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from datetime import datetime, timedelta
 from flask import render_template, request, redirect, url_for, session, flash
 from bson.objectid import ObjectId
+import urllib.parse
 
 
 app = Flask(__name__, template_folder='templates')
@@ -24,6 +25,12 @@ client = MongoClient("mongodb+srv://narisnarendras6@gmail.com:Posa@1432@your-clu
 db = client['bike_rental']
 users_collection = db['users']
 bookings_collection = db["bookings"]
+
+username = "narisnarendras6@gmail.com"
+password = urllib.parse.quote_plus("Posa@1432")  # Encodes special characters
+
+uri = f"mongodb+srv://{username}:{password}@your-cluster.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(uri)
 
 @app.before_request
 def before_request():
