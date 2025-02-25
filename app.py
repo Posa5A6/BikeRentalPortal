@@ -20,7 +20,7 @@ app.secret_key = 'your_secret_key'  # Secret key for sessions and flash messages
 mongo = PyMongo(app)
 
 # Connect to MongoDB
-client = MongoClient('MongoClient("mongodb://127.0.0.1:27017/")
+client = MongoClient("mongodb+srv://narisnarendras6@gmail.com:Posa@1432@your-cluster.mongodb.net/?retryWrites=true&w=majority")
 db = client['bike_rental']
 users_collection = db['users']
 bookings_collection = db["bookings"]
